@@ -1,0 +1,1 @@
+I first plan to create a green ball that has left-right speed and up-down speed attributes. I will manipulate these attributes to allow the ball to move in any direction. When the ball hits a horizontal wall, I will switch up-down to its inverse. I will determine whether the wall has been contacted using similar IF statements that I used to stop the paddles in this checkpoint.

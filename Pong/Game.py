@@ -1,4 +1,4 @@
-#Scott Crawshaw
+# Scott Crawshaw
 # game.py
 # 1/21/19
 # CS1
@@ -27,13 +27,13 @@ def draw_table():
     clear()
 
     # set speed to zero if left paddle is at bottom wall and going down or at top wall and going up
-    if (left_paddle[1] < PADDLE_SPEED and left_speed < 0) or (
-            left_paddle[1] >= (WINDOW_HEIGHT - PADDLE_HEIGHT) and left_speed > 0):
+    if (left_paddle[1] < PADDLE_SPEED and left_speed < 0) or \
+            (left_paddle[1] >= (WINDOW_HEIGHT - PADDLE_HEIGHT) and left_speed > 0):
         left_speed = 0
 
     # set speed to zero if right paddle is at bottom wall and going down or at top wall and going up
-    if (right_paddle[1] < PADDLE_SPEED and right_speed < 0) or (
-            right_paddle[1] >= (WINDOW_HEIGHT - PADDLE_HEIGHT) and right_speed > 0):
+    if (right_paddle[1] < PADDLE_SPEED and right_speed < 0) or \
+            (right_paddle[1] >= (WINDOW_HEIGHT - PADDLE_HEIGHT) and right_speed > 0):
         right_speed = 0
 
     # advance paddles
@@ -54,8 +54,8 @@ WINDOW_HEIGHT = 600
 WINDOW_WIDTH = 800
 
 # start paddles in middle of their respective goals
-left_paddle = [0, (WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)]
-right_paddle = [WINDOW_WIDTH - PADDLE_WIDTH, (WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)]
+left_paddle = [0, (WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)]  # x and y coords
+right_paddle = [WINDOW_WIDTH - PADDLE_WIDTH, (WINDOW_HEIGHT / 2) - (PADDLE_HEIGHT / 2)]  # x and y coords
 
 LEFT_PADDLE_UP = 'a'
 LEFT_PADDLE_DOWN = 'z'
