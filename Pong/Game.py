@@ -73,11 +73,8 @@ def check_ball_collision():  # see if ball has collided with any relevant featur
         reset_ball()
 
 
-def draw_table():
-    global left_paddle, right_paddle, left_speed, right_speed
-
-    set_clear_color(1, 1, 1)  # set background white
-    clear()
+def check_paddle_wall_collision():
+    global left_speed, right_speed
 
     # set speed to zero if left paddle is at bottom wall and going down or at top wall and going up
     if (left_paddle[1] < PADDLE_SPEED and left_speed < 0) or \
@@ -89,6 +86,14 @@ def draw_table():
             (right_paddle[1] >= (WINDOW_HEIGHT - PADDLE_HEIGHT) and right_speed > 0):
         right_speed = 0
 
+
+def draw_table():
+    global left_paddle, right_paddle, left_speed, right_speed
+
+    set_clear_color(1, 1, 1)  # set background white
+    clear()
+
+    check_paddle_wall_collision()
     check_ball_collision()
 
     # advance paddles and ball
