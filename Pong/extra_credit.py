@@ -1,11 +1,11 @@
 # Scott Crawshaw
 # extra_credit.py
-# 1/25/19
+# 1/27/19
 # CS1
-# This is my extra credit submission for lab 1
+# This is my extra credit submission for lab 1. The left player shoots with X, the right player shoots with L
 
-from random import choice, randint
-from time import time
+from random import choice, randint  # for randomizing ball color and initial direction
+from time import time  # for creating reload time for the guns
 
 from cs1lib import *
 
@@ -36,9 +36,11 @@ def key_pressed(key):
 def new_game():
     global left_score, right_score, left_speed, right_speed, left_paddle, right_paddle
     global left_gun, right_gun, left_bullets, right_bullets, left_reloaded, right_reloaded
+
     left_score = 0
     right_score = 0
 
+    # paddle speeds
     left_speed = 0
     right_speed = 0
 
@@ -50,6 +52,7 @@ def new_game():
     left_gun = [PADDLE_WIDTH, (WINDOW_HEIGHT / 2) - (GUN_HEIGHT / 2)]
     right_gun = [WINDOW_WIDTH - PADDLE_WIDTH - GUN_WIDTH, (WINDOW_HEIGHT / 2) - (GUN_HEIGHT / 2)]
 
+    # will be used to store bullet coordinates
     left_bullets = []
     right_bullets = []
 
@@ -59,10 +62,10 @@ def new_game():
     reset_ball()
 
 
-def reset_ball():  # start ball in center of screen
+def reset_ball():  # function starts ball in center of screen
     global ball_x_speed, ball_y_speed, ball
 
-    # randomize ball initial direction
+    # randomize ball initial direction. options are upleft, downleft, upright, downright
     ball_x_speed = choice([BALL_SPEED, -BALL_SPEED])
     ball_y_speed = choice([BALL_SPEED, -BALL_SPEED])
     ball = [WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2]
@@ -76,7 +79,7 @@ def change_ball_color():
     ball_color = [randint(0, 90) / 100, randint(0, 90) / 100, randint(0, 90) / 100]
 
 
-def check_ball_collision():  # see if ball has collided with any relevant features
+def check_ball_collision():
     global ball_y_speed, ball_x_speed, left_score, right_score
 
     if ball[1] - BALL_RADIUS <= 0 and ball_y_speed < 0:  # check ceiling collision
@@ -85,8 +88,8 @@ def check_ball_collision():  # see if ball has collided with any relevant featur
     if ball[1] + BALL_RADIUS >= WINDOW_HEIGHT and ball_y_speed > 0:  # check floor collision
         ball_y_speed = -ball_y_speed
 
-    if ball[0] - BALL_RADIUS <= PADDLE_WIDTH and ball[0] >= PADDLE_WIDTH and ball_x_speed < 0 and ball[1] >= \
-            left_paddle[1] and ball[1] <= left_paddle[1] + PADDLE_HEIGHT:  # check left paddle collision
+    if ball[0] - BALL_RADIUS <= PADDLE_WIDTH and ball_x_speed < 0 and ball[1] >= left_paddle[1] and ball[1] <= \
+            left_paddle[1] + PADDLE_HEIGHT:  # check left paddle collision
         ball_x_speed = -ball_x_speed
         change_ball_color()
 
@@ -100,9 +103,8 @@ def check_ball_collision():  # see if ball has collided with any relevant featur
         right_score += 1
         reset_ball()
 
-    if ball[0] + BALL_RADIUS >= WINDOW_WIDTH - PADDLE_WIDTH and ball[
-        0] <= WINDOW_WIDTH - PADDLE_WIDTH and ball_x_speed > 0 and ball[1] >= right_paddle[1] and ball[1] <= \
-            right_paddle[1] + PADDLE_HEIGHT:  # check right paddle collision
+    if ball[0] + BALL_RADIUS >= WINDOW_WIDTH - PADDLE_WIDTH and ball_x_speed > 0 and ball[1] >= right_paddle[1] and \
+            ball[1] <= right_paddle[1] + PADDLE_HEIGHT:  # check right paddle collision
         ball_x_speed = -ball_x_speed
         change_ball_color()
 
@@ -132,9 +134,29 @@ def create_bullet(side):
 
 
 def check_bullet_collision():
+    global ball_x_speed
+    count = -1
+    delete = []  # this will hold the indexes of the bullets that have hit the ball and need to be destroyed
     for bullet in left_bullets:
-        if bullet[0] + BULLET_WIDTH >= ball[0] - BALL_RADIUS and bullet[0] + BULLET_WIDTH <= ball[0]:
-            pass
+        count += 1
+        if bullet[0] + BULLET_WIDTH >= ball[0] - BALL_RADIUS and bullet[0] + BULLET_WIDTH <= ball[
+            0] + BALL_RADIUS:  # bullet x is ball x
+            if bullet[1] <= ball[1] + BALL_RADIUS and bullet[1] >= ball[1] - BALL_RADIUS:  # bullet y is ball y
+                ball_x_speed = BALL_SPEED
+                delete.append(count)
+    for index in delete:  # delete any bullets that hit the ball
+        del left_bullets[index]
+
+    count = -1
+    delete = []  # this will hold the indexes of the bullets that have hit the ball and need to be destroyed
+    for bullet in right_bullets:
+        count += 1
+        if bullet[0] <= ball[0] + BALL_RADIUS and bullet[0] >= ball[0] - BALL_RADIUS:  # bullet x is ball x
+            if bullet[1] <= ball[1] + BALL_RADIUS and bullet[1] >= ball[1] - BALL_RADIUS:  # bullet y is ball y
+                ball_x_speed = -BALL_SPEED
+                delete.append(count)
+    for index in delete:  # delete any bullets that hit the ball
+        del right_bullets[index]
 
 
 def reload_bullet():
@@ -170,6 +192,7 @@ def draw_table():
     # check for relevant collisions
     check_paddle_wall_collision()
     check_ball_collision()
+    check_bullet_collision()
     reload_bullet()
 
     # advance paddles, ball, and gun
@@ -241,12 +264,14 @@ BULLET_SPEED = 10
 
 GUN_WIDTH = 15
 GUN_HEIGHT = 10
-# set ball color randomly, but make sure its never pure white
+
+# set ball color randomly, but make sure its never pure white so it doesn't blend in to background
 ball_color = [randint(0, 90) / 100, randint(0, 90) / 100, randint(0, 90) / 100]
 
 left_score = 0
 right_score = 0
 
+# paddle speeds
 left_speed = 0
 right_speed = 0
 
@@ -258,13 +283,14 @@ right_paddle = [WINDOW_WIDTH - PADDLE_WIDTH, (WINDOW_HEIGHT / 2) - (PADDLE_HEIGH
 left_gun = [PADDLE_WIDTH, (WINDOW_HEIGHT / 2) - (GUN_HEIGHT / 2)]
 right_gun = [WINDOW_WIDTH - PADDLE_WIDTH - GUN_WIDTH, (WINDOW_HEIGHT / 2) - (GUN_HEIGHT / 2)]
 
-left_bullets = []  # this list will be filled with the coordinates of each of the left players bullets
-right_bullets = []  # this list will be filled with the coordinates of each of the left players bullets
+left_bullets = []  # this list will be filled with lists containing the coordinates of each of the left players bullets
+right_bullets = []  # this list will be filled with lists containing coordinates of each of the right players bullets
 
-RELOAD_TIME = 1  # 1 second reload time
+RELOAD_TIME = 0.5  # reload time in seconds
 left_reloaded = True
 right_reloaded = True
 
+# target epoch time for reloading
 right_goal_epoch = 0
 left_goal_epoch = 0
 

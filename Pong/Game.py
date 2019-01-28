@@ -30,6 +30,7 @@ def new_game():
     left_score = 0
     right_score = 0
 
+    # paddle speeds
     left_speed = 0
     right_speed = 0
 
@@ -48,7 +49,7 @@ def reset_ball():  # start ball in center of screen
     ball = [WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2]
 
 
-def check_ball_collision():  # see if ball has collided with any relevant features
+def check_ball_collision():
     global ball_y_speed, ball_x_speed, left_score, right_score
 
     if ball[1] - BALL_RADIUS <= 0 and ball_y_speed < 0:  # check ceiling collision
@@ -57,16 +58,15 @@ def check_ball_collision():  # see if ball has collided with any relevant featur
     if ball[1] + BALL_RADIUS >= WINDOW_HEIGHT and ball_y_speed > 0:  # check floor collision
         ball_y_speed = -ball_y_speed
 
-    if ball[0] - BALL_RADIUS <= PADDLE_WIDTH and ball[0] >= PADDLE_WIDTH and ball_x_speed < 0 and ball[1] >= \
-            left_paddle[1] and ball[1] <= left_paddle[1] + PADDLE_HEIGHT:  # check left paddle collision
+    if ball[0] - BALL_RADIUS <= PADDLE_WIDTH and ball_x_speed < 0 and ball[1] >= left_paddle[1] and ball[1] <= \
+            left_paddle[1] + PADDLE_HEIGHT:  # check left paddle collision
         ball_x_speed = -ball_x_speed
     elif ball[0] - BALL_RADIUS <= 0:  # check left wall collision
         right_score += 1
         reset_ball()
 
-    if ball[0] + BALL_RADIUS >= WINDOW_WIDTH - PADDLE_WIDTH and ball[
-        0] <= WINDOW_WIDTH - PADDLE_WIDTH and ball_x_speed > 0 and ball[1] >= right_paddle[1] and ball[1] <= \
-            right_paddle[1] + PADDLE_HEIGHT:  # check right paddle collision
+    if ball[0] + BALL_RADIUS >= WINDOW_WIDTH - PADDLE_WIDTH and ball_x_speed > 0 and ball[1] >= right_paddle[1] and \
+            ball[1] <= right_paddle[1] + PADDLE_HEIGHT:  # check right paddle collision
         ball_x_speed = -ball_x_speed
     elif ball[0] + BALL_RADIUS >= WINDOW_WIDTH:  # check right wall collision
         left_score += 1
@@ -142,6 +142,7 @@ BALL_RADIUS = 10
 left_score = 0
 right_score = 0
 
+# paddle speeds
 left_speed = 0
 right_speed = 0
 

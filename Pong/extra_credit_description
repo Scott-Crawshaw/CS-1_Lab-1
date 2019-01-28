@@ -1,0 +1,19 @@
+Initial Direction:
+The ball's initial direction can be one of four options (upright, downright, upleft, downleft).
+The direction is randomly chosen. (uses the random lib)
+
+Ball Color:
+The ball changes to a random color every time it hits a paddle. (uses the random lib)
+I make sure that this color is never too similar to the background color.
+
+Acceleration:
+The ball slightly accelerates in the direction of the paddle's motion.
+
+Guns:
+Each of the paddles has a gun! The guns have a reload time of one half second. (uses the time lib)
+If a bullet hits a ball that is coming towards the shooter, the ball changes direction.
+The left paddle shoots with X, the right shoots with L
+
+Score:
+The score is displayed on the screen.
+The score resets when a new game starts.
